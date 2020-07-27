@@ -1,5 +1,5 @@
 # Speech-Recognition-and-Processing
-## ERC_Wiki_Content
+## ERC_Wiki_Content (By Harshit Gupta)
 Speech Recognition is the process of converting spoken languages into text by computers. It is one of the sub-branch of the field of computational linguistics and computer science. Speech Recognition is what enables the machines and apps like Siri to understand what the person is saying and respond in the correct way. It is closely related to Natural Language Processing (NLP) and both may share some constructs. Speech Recognition only involves the conversion of an audio signal to corresponding text while NLP acts on this text to give meaningful data.
 
 Speech Recognition is used in a lot of applications. The modern-day voice searches and voiced user interfaces like Amazon’s Alexa and Apple’s Siri relies on the speech recognition system for converting the spoken command to text. Further speech recognition can be used for voice recognition or speaker identification. 
@@ -45,8 +45,25 @@ Do give th read to HMMs and GMMs articles. They prove to be super useful.
 
 ![Overall model](https://github.com/sharvaree1921/Speech-Recognition-and-Processing/blob/master/Overall_model_for_speech_recognition.png)
 
+#### Lexicon Pronunciation Model and Acoustic Model
+The pronunciation lexicon is modeled using a Markov Chain. Self looping is introduced so that the phones are aligned to the audio(basically to counter the change in audio speed). 
+The chains can be of different types: 
+1. Each state may refer to one phone.
+2. Since the phones are not homogeneous(The frequencies in a phone vary with time), it is better to use a group of some states to refer to one phone. Typically, 3 states are used.
+3. Further, since the phones may depend upon the surrounding phones, we may use a kind of overlapping model in which three states are used to model a triplet of phones(called triphone). Although this is a more realistic model, it comes with a computation cost as the number of possible chains increases with the square of the dictionary size.
 
+![Speech Lexicon model]()
 
+For each of the types, we may have different chains possible for the same word depending on the speed(we may have multiple same values due to the self-looping). The likelihood of the observation X given a phone W is computed from the sum of all possible paths. For each path, the probability is equal to the product of the probability of path and the observations. The second one is modeled using GMM. So, the total probability becomes: 
 
+![]()
+
+The value in the bracket denotes the GMM(Acoustic Model). Then we calculate the probability of path by multiplying the probabilities from all the nodes in the path which we get by taking the product of the probability of that node and the probability we got from GMM. At last, we sum the probabilities of all the paths that denote the same word.
+
+Along with the usual phones, we generally use one more phone called the SIL which is used to handle silence, noise, and pauses in the speech. It is made up of 5 states as the noises can be very complex.
+
+Using all this, we can compute the P(X|W). We use the GMM and the feature vector extracted from the audio signal to calculate the probability of having a particular state at a given time frame. By doing so for each time frame, we can get the sequence of most likely states and then the most likely sequence of phones. From this we can get the word and combining this with the SIL phone, we can get a sequence of words eventually leading to the whole text. This process of finding the most likely sequence of hidden states that results in a sequence of observed events is called decoding. We generally use the [Viterbi Algorithm](https://en.wikipedia.org/wiki/Viterbi_algorithm) for doing so.
+
+![speech acoustics](https://www.tech-iitb.org/erc-wiki/images/5/51/Speech_acoustic.jpg)
 
 
