@@ -52,7 +52,7 @@ The chains can be of different types:
 2. Since the phones are not homogeneous(The frequencies in a phone vary with time), it is better to use a group of some states to refer to one phone. Typically, 3 states are used.
 3. Further, since the phones may depend upon the surrounding phones, we may use a kind of overlapping model in which three states are used to model a triplet of phones(called triphone). Although this is a more realistic model, it comes with a computation cost as the number of possible chains increases with the square of the dictionary size.
 
-![Speech Lexicon model]()
+![Speech Lexicon model](https://www.tech-iitb.org/erc-wiki/index.php/Speech_Recognition#/media/File:Speech_lexicon_chain.jpg)
 
 For each of the types, we may have different chains possible for the same word depending on the speed(we may have multiple same values due to the self-looping). The likelihood of the observation X given a phone W is computed from the sum of all possible paths. For each path, the probability is equal to the product of the probability of path and the observations. The second one is modeled using GMM. So, the total probability becomes: 
 
@@ -65,5 +65,7 @@ Along with the usual phones, we generally use one more phone called the SIL whic
 Using all this, we can compute the P(X|W). We use the GMM and the feature vector extracted from the audio signal to calculate the probability of having a particular state at a given time frame. By doing so for each time frame, we can get the sequence of most likely states and then the most likely sequence of phones. From this we can get the word and combining this with the SIL phone, we can get a sequence of words eventually leading to the whole text. This process of finding the most likely sequence of hidden states that results in a sequence of observed events is called decoding. We generally use the [Viterbi Algorithm](https://en.wikipedia.org/wiki/Viterbi_algorithm) for doing so.
 
 ![speech acoustics](https://www.tech-iitb.org/erc-wiki/images/5/51/Speech_acoustic.jpg)
+
+
 
 
