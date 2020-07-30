@@ -66,6 +66,32 @@ Using all this, we can compute the P(X|W). We use the GMM and the feature vector
 
 ![speech acoustics](https://www.tech-iitb.org/erc-wiki/images/5/51/Speech_acoustic.jpg)
 
+#### Language Models
+The language Model is not actually required in predicting what a given audio signal “says” but is useful in predicting the sequence of words. In simple terms, the language model tells which words are most likely to occur together and predicting what is the next word given a sequence of words. This helps in making the text recognized more grammatically and semantically sound. Therefore, if we include a language model in decoding, we can improve the accuracy of our model. 
+
+**N_Gram Model**:In the n-gram model, the probability of a given word is assumed to be only dependent on the previous n words. So,
+![123](https://www.tech-iitb.org/erc-wiki/index.php/Speech_Recognition#/media/File:Ngram_probability.png)
+The conditional probability can be calculated in many ways. The simplest way is to take the ratio of the probability of the word sequences. More advanced approaches use smoothing to overcome the drawbacks of this approach. Popular smoothing techniques used are Good-Turing smoothing and Katz smoothing.
+For in-depth knowledge refer to [Language Models: N-Gram](https://towardsdatascience.com/introduction-to-language-models-n-gram-e323081503d9).
+
+### Implementation
+#### Weighted Finite State Transducer:
+The normal algorithms for decoding the HMM model are not computationally efficient if the vocabulary is very large. The WFST comes to our rescue. The basic principle is to divide the task into subtasks and taking the best from one and feeding it to another instead of feeding the whole thing. The process can be divided as follows: 
+1. Identifying the Context-Dependent phones from the HMM states
+2. Then we convert CD phones to phones.
+3. Then the pronunciation lexicon converts the sequence of the phone to words.
+4. Lastly, we use these words and the language model, to predict the actual grammatically correct sequence of words.
+
+These all can be seen as state machines that take some inputs and give some outputs. These are called transducers. So, for speech recognition, we have four transducers: 
+
+![](https://www.tech-iitb.org/erc-wiki/index.php/Speech_Recognition#/media/File:Transducers_in_wfst.jpg)
+
+Transducers in wfst.jpg
+
+For the purpose of speech recognition, these transducers are composed as H ◦ C ◦ L ◦ G. At last, we have to get a deterministic answer and reduce the number of states as much as possible for faster computation. So, we apply determinization (det) to make it easier to search deterministically and minimization (min) to reduce the number of redundancy in states and transitions. We do this after each transducer to reduce the computation done by the next transducer. So, the model can be seen as:
+**HCLG = min(det(H * min(det)))
+{\displaystyle HCLG=min(det(H\circ min(det(C\circ min(det(L\circ G))))))}
+![]()
 
 
 
