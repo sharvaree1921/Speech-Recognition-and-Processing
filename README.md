@@ -91,7 +91,7 @@ Transducers in wfst.jpg
 For the purpose of speech recognition, these transducers are composed as H ◦ C ◦ L ◦ G. At last, we have to get a deterministic answer and reduce the number of states as much as possible for faster computation. So, we apply determinization (det) to make it easier to search deterministically and minimization (min) to reduce the number of redundancy in states and transitions. We do this after each transducer to reduce the computation done by the next transducer. So, the model can be seen as:
 **HCLG = min(det(H * min(det)))
 {\displaystyle HCLG=min(det(H\circ min(det(C\circ min(det(L\circ G))))))}
-![]()
+
 
 
 
